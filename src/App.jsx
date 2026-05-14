@@ -11,7 +11,9 @@ import {
   Shapes,
   Palette,
   Terminal,
-  Layers
+  Layers,
+  Menu,
+  X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import html2canvas from 'html2canvas';
@@ -293,6 +295,7 @@ const assignments = [
 function App() {
   const [activeTab, setActiveTab] = useState(assignments[0]);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const canvasRef = useRef(null);
   const reportRef = useRef(null);
 
@@ -330,11 +333,24 @@ function App() {
       {/* Header */}
       <header className="glass">
         <div className="header-content">
+          <button 
+            className="mobile-menu-btn" 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
           <div className="logo">
             <Cpu className="icon-accent" size={28} />
             <h1>PixelCraft <span className="gradient-text">CG Lab</span></h1>
           </div>
           <div className="user-info">
+            <button 
+              className="btn-icon desktop-only" 
+              onClick={() => setSidebarOpen(!isSidebarOpen)}
+              title={isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+            >
+              <Monitor size={20} />
+            </button>
             <span className="badge">BCA VI - MJL14CPA</span>
             <span className="deadline">Due: 15 May 2026</span>
           </div>
@@ -342,8 +358,12 @@ function App() {
       </header>
 
       <main>
+        <div 
+          className={`mobile-backdrop ${isMobileMenuOpen ? 'active' : ''}`} 
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
         {/* Sidebar */}
-        <aside className={'glass ' + (isSidebarOpen ? 'open' : 'closed')}>
+        <aside className={`glass ${isSidebarOpen ? 'open' : 'closed'} ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
           <div className="sidebar-header">
             <h3>Assignments</h3>
           </div>
@@ -352,7 +372,10 @@ function App() {
               <button 
                 key={item.id}
                 className={'nav-item ' + (activeTab.id === item.id ? 'active' : '')}
-                onClick={() => setActiveTab(item)}
+                onClick={() => {
+                  setActiveTab(item);
+                  setIsMobileMenuOpen(false);
+                }}
               >
                 <Shapes size={18} style={{minWidth: '18px'}} />
                 <span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{item.id}. {item.title}</span>

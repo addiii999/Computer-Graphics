@@ -10,6 +10,23 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .header-content {
@@ -66,6 +83,14 @@ aside {
   flex-direction: column;
   padding: 1.5rem 1rem;
   overflow: hidden;
+  transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+}
+
+aside.closed {
+  width: 0;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 aside nav {
@@ -201,6 +226,12 @@ aside nav {
   color: var(--text-primary);
 }
 
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
 .icon-cyan { color: var(--accent-primary); }
 .icon-purple { color: var(--accent-secondary); }
 .icon-accent { color: var(--accent-primary); }
@@ -267,4 +298,117 @@ aside nav {
   color: #777;
   border-top: 1px solid #ddd;
   padding-top: 10px;
+}
+
+@media (max-width: 1024px) {
+  .app-container {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  main {
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    margin: 0.5rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .user-info {
+    display: none; /* Hide non-essential info on small mobile */
+  }
+
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+
+  main {
+    padding: 0.5rem;
+  }
+
+  aside {
+    position: fixed;
+    top: 5rem;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    width: calc(100% - 1rem);
+    z-index: 1000;
+    transform: translateX(-110%);
+    transition: transform 0.3s ease-in-out;
+    background: var(--surface-color);
+  }
+
+  aside.mobile-open {
+    transform: translateX(0);
+  }
+
+  .panel-header {
+    padding: 0.8rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .panel-header .actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .panel-header .actions .btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .canvas-container {
+    padding: 1rem;
+    overflow: hidden;
+  }
+
+  .bgi-canvas {
+    max-width: 100%;
+    height: auto !important;
+    aspect-ratio: 4/3;
+  }
+
+  .code-container {
+    padding: 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo h1 span {
+    display: none; /* Hide "CG Lab" on very small screens */
+  }
+}
+
+.mobile-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+
+@media (max-width: 768px) {
+  .mobile-backdrop.active {
+    display: block;
+  }
 }
